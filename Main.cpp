@@ -210,32 +210,7 @@ int main(void) {
  }
 
  Object7* RemoveExistingObject(HeaderD** pStruct7, char* pExistingD) {
-	 uint32_t node_count, object_count; 
-	 Object7* helper_obj;
-	 HeaderD** helper_struct; 
-	 object_count = 0, node_count = 0; 
-	 
-	 
-	 while ((*pStruct7)) {
-		 
-		 helper_struct = pStruct7; 
-		 helper_obj = (Object7*)(*pStruct7)->pObject; 
-		 while (helper_obj) {
-			 if (helper_obj->pID = pExistingD) {
-				 if (node_count == 0) {
-					 (*pStruct7) = (*pStruct7)->pNext; 
-					 return (Object7*)(*helper_struct)->pObject; 
-				 }
-				 (*pStruct7) = (*pStruct7)->pNext; 
-				 return helper_obj; 
-			 }
-			 helper_obj = helper_obj->pNext; 
-		 }
-
-
-		 (*pStruct7) = (*pStruct7)->pNext; 
-		 ++node_count; 
-	 }
+	
 
 	 return 0; 
  }
