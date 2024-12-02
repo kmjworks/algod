@@ -75,9 +75,26 @@ int main(void) {
 		 HeaderD* new_header = (HeaderD*)malloc(sizeof(HeaderD)); 
 		 new_header->cBegin = *pNewID; // Set the new starting character of the list
 		 new_header->pObject = NULL; 
+		 new_header->pNext = current_header; 
+		 new_header->pPrior = previous_header; 
+
+		 if (previous_header != NULL) {
+			 previous_header->pNext = new_header; 
+		 }
+
+		 if (previous_header == NULL) {
+			 *pStruct7 = new_header; 
+		 }
+
+		 current_header = new_header; // Current header points to the newly created header
 
 	 }
 
+
+	 // Insert object into the list 
+	 Object7* new_obj = (Object7*)malloc(sizeof(Object7)); 
+	 new_obj->Code = NewCode; 
+	 new_obj->pDate2 = (Date2*)malloc(sizeof(Date2));
  }
 
  Object7* RemoveExistingObject(HeaderD** pStruct7, char* pExistingD) {
