@@ -55,98 +55,21 @@ int main(void) {
 
  
 
- int insertNewObject(HeaderD** pStruct7, char *pNewID, int NewCode) {
+ int insertNewObject(HeaderD** pStruct7, char* pNewID, int NewCode) {
 
 	 if (*pNewID < 'A' || *pNewID > 'Z' || NewCode <= 0 || sizeof(pNewID) < 3) {
-		 return 0; 
-	}
-
-	 HeaderD* backup = *pStruct7; 
-	 backup = (*pStruct7); 
-
-	 if (*pNewID == 'A' && (*pStruct7)->cBegin != 'A') {
-		
-		 
-		 HeaderD* new_head = (HeaderD*)malloc(sizeof(pStruct7)); 
-		// new_head->cBegin = (char)malloc(sizeof(1)); 
-		 new_head->cBegin = *pNewID; 
-		 new_head->pNext = (*pStruct7);
-		 new_head->pPrior = NULL; 
-		 (*pStruct7)->pPrior = new_head;
-
-		 Object7* new_obj = (Object7*)malloc(sizeof(Object7)); 
-		 new_obj->Code = NewCode; 
-		 new_obj->pDate2 = (Date2*)malloc(sizeof(Date2)); 
-		 GetDate2(time(&raw_time), new_obj->pDate2); 
-		 new_obj->pID = (char*)malloc(sizeof(pNewID)+1); // account for NULL terminator 
-		 strcpy(new_obj->pID, pNewID);
-		 new_head->pObject = new_obj; 
-
-		 return (int)new_head; 
-		 
+		 return 0;
 	 }
-	 else {
-		 HeaderD* helper = (*pStruct7); 
 
-		 while (helper) {
-			 if (helper->cBegin == *pNewID) {
-				 Object7* new_obj = (Object7*)malloc(sizeof(Object7)); 
-				 Object7* helper_obj = (Object7*)(*pStruct7)->pObject;
-				 while (helper_obj) {
-					 for (int i = 1; i < sizeof(pNewID); ++i) {
-						 if (helper_obj->pID[i] < pNewID[i]) {
-							 helper->pObject = helper_obj->pNext;
+	 HeaderD* current_header = *pStruct7;
+	 HeaderD* previous_header = NULL;
 
-						 }
-						 else {
-							 new_obj->pNext = (Object7*)helper->pObject;
-							 helper->pObject = new_obj;
-							 new_obj->pDate2 = (Date2*)malloc(sizeof(Date2)); 
-							 GetDate2(time(&raw_time), new_obj->pDate2); 
-							 new_obj->pID = (char*)malloc(sizeof(pNewID)); 
-							 strcpy(new_obj->pID, pNewID); 
-							 new_obj->Code = NewCode;
-							 return 1; 
-
-						 }
-					 }
-				 }
-			 }
-			 helper = helper->pNext;
-		 }
-		 
+	 // Traverse through the nodes to determine whether the list already exists
+	 while (current_header != NULL && current_header->cBegin < *pNewID) {
+		 previous_header = current_header; 
+		 current_header = current_header->pNext; 
 	 }
-	 
-	 (*pStruct7) = backup; 
 
-	 while (backup) {
-		 if (backup->cBegin < *pNewID) {
-			 HeaderD* new_node = (HeaderD*)malloc(sizeof(pStruct7));
-			 new_node->cBegin = NULL; 
-			 new_node->cBegin = (char)malloc(sizeof(char));
-			 new_node->cBegin = *pNewID; 
-			 new_node->pObject = NULL; 
-			 new_node->pPrior = NULL; 
-			 new_node->pNext = NULL; 
-
-			 new_node->pPrior = backup->pPrior; 
-			 new_node->pNext = backup; 
-			 backup->pPrior = new_node;
-
-			 Object7* new_obj = (Object7*)malloc(sizeof(Object7)); 
-			 new_obj->Code = NewCode; 
-			 new_obj->Code = NewCode; 
-			 new_obj->pDate2 = (Date2*)malloc(sizeof(Date2)); 
-			 GetDate2(time(&raw_time), new_obj->pDate2); 
-			 new_obj->pID = (char*)malloc(sizeof(pNewID));
-			 strcpy(new_obj->pID, pNewID); 
-			 new_obj->pNext = NULL; 
-			 return 1; 
-		 }
-	 }
-	 
-
-	 return 0; 
  }
 
  Object7* RemoveExistingObject(HeaderD** pStruct7, char* pExistingD) {
