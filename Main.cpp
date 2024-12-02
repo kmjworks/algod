@@ -61,14 +61,14 @@ int main(void) {
 		//char newid10[] = "wksad";
 		//insertNewObject(test, newid10, 32225641);
 
-		char newid11[] = "Wa";
-		insertNewObject(test, newid11, 32125641);
+		//char newid11[] = "Wa";
+		//insertNewObject(test, newid11, 32125641);
 
 		//char newid12[] = "W8serad";
 		//insertNewObject(test, newid12, 32525641);
 
-		//char newid13[] = "W_serad";
-		//insertNewObject(test, newid13, 32525641);
+		char newid13[] = "W_serad";
+		insertNewObject(test, newid13, 32525641);
 
 		PrintObjects(pStruct);
 	}
@@ -114,6 +114,13 @@ int main(void) {
 		 std::ostringstream errorMsg; 
 		 errorMsg << "Invalid parameters - pNewID : " << pNewID << " - NewCode: " << NewCode; 
 		 throw std::runtime_error(errorMsg.str()); 
+	 }
+
+	 for (size_t i = 0; i < strlen(pNewID); ++i) {
+		 if (!std::isalpha(pNewID[i])) {
+			 throw std::runtime_error("Invalid pNewID, contains non-alphabetic character : " 
+									  + std::string(pNewID));
+		 }
 	 }
 
 	 HeaderD* current_header = *pStruct7;
