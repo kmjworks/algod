@@ -210,7 +210,11 @@ int main(void) {
  }
 
  Object7* RemoveExistingObject(HeaderD** pStruct7, char* pExistingD) {
-	
+	 if (!pStruct7 || !*pStruct7) {
+		 throw std::runtime_error("List is empty or the provided pointer is invalid"); 
+	}
+
+	 
 
 	 return 0; 
  }
