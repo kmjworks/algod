@@ -70,6 +70,14 @@ int main(void) {
 		 current_header = current_header->pNext; 
 	 }
 
+	 // If doesn't exist, create a new HeaderD node
+	 if (current_header == NULL || current_header->cBegin != *pNewID) {
+		 HeaderD* new_header = (HeaderD*)malloc(sizeof(HeaderD)); 
+		 new_header->cBegin = *pNewID; // Set the new starting character of the list
+		 new_header->pObject = NULL; 
+
+	 }
+
  }
 
  Object7* RemoveExistingObject(HeaderD** pStruct7, char* pExistingD) {
