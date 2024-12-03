@@ -116,7 +116,13 @@ int main(void) {
 	 }
 	 return false; 
  }
+ /* 
+	Each malloc() call is checked whether a valid pointer is returned or not. 
+	Although this is a C program some utilities such as throws and runtime_errors are used
+	which would be bulkier to implement in pure C
 
+	Core functionality is implemented in pure C (data types)
+ */
  int insertNewObject(HeaderD** pStruct7, char* pNewID, int NewCode) {
 
 	 if (*pNewID < 'A' || *pNewID > 'Z' || NewCode <= 0 || strlen(pNewID) < 2) {
@@ -144,9 +150,7 @@ int main(void) {
 	 // If doesn't exist, create a new HeaderD node
 	 if (current_header == NULL || current_header->cBegin != *pNewID) {
 		 HeaderD* new_header = (HeaderD*)malloc(sizeof(HeaderD)); 
-		 if (!new_header) {
-			 throw std::runtime_error("Memory allocation failed"); 
-		 }
+		 if (!new_header) throw std::runtime_error("Memory allocation failed"); 
 		 new_header->cBegin = *pNewID; // Set the new starting character of the list
 		 new_header->pObject = NULL; 
 		 new_header->pNext = current_header; 
@@ -179,11 +183,12 @@ int main(void) {
 	 }
 	 new_obj->Code = NewCode; 
 	 new_obj->pDate2 = (Date2*)malloc(sizeof(Date2));
+	 if (!new_obj->pDate2) throw std::runtime_error("Memory allocation failed for pDate2"); 
 	 GetDate2(time(&raw_time), new_obj->pDate2); 
+
 	 new_obj->pID = (char*)malloc(strlen(pNewID) + 1); // Account for '\0' operator
-	 if (!new_obj->pID) {
-		 throw std::runtime_error("Memory allocation failed for ID");
-	 }
+	 if (!new_obj->pID) throw std::runtime_error("Memory allocation failed for ID");
+	 
 	 strcpy(new_obj->pID, pNewID); 
 	 new_obj->pNext = NULL; 
 
