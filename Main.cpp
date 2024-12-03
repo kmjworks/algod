@@ -67,10 +67,15 @@ int main(void) {
 		//char newid12[] = "W8serad";
 		//insertNewObject(test, newid12, 32525641);
 
-		char newid13[] = "W_serad";
-		insertNewObject(test, newid13, 32525641);
+		//char newid13[] = "W_serad";
+		//insertNewObject(test, newid13, 32525641);
 
 		PrintObjects(pStruct);
+		char idToRemove[] = "Zweas";
+		Object7* removedObject = RemoveExistingObject(test, idToRemove); 
+		char idToRemove2[] = "Aasers"; 
+		Object7* removedObject2 = RemoveExistingObject(test, idToRemove2);
+		PrintObjects(pStruct); 
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << "Caught exception : " << e.what() << std::flush; 
@@ -214,7 +219,38 @@ int main(void) {
 		 throw std::runtime_error("List is empty or the provided pointer is invalid"); 
 	}
 
-	 
+	 HeaderD* current_header = *pStruct7; 
+	 Object7* previous_obj = NULL; 
+
+	 while (current_header) {
+		 Object7* current_obj = (Object7*)current_header->pObject; // First object 
+		 previous_obj = NULL; // Reset previous object to NULL 
+
+		 while (current_obj) {
+			 if (strcmp(current_obj->pID, pExistingD) == 0) {
+				 // Object located, remove it
+				 if (previous_obj == NULL) {
+					 current_header->pObject = current_obj->pNext; // Remove first object from list
+				 }
+				 else 
+				 {
+					 previous_obj->pNext = current_obj->pNext; 
+				 }
+
+				 printf("Removed object with pID : %s from list %c\n", pExistingD, current_header->cBegin); 
+				 return current_obj; 
+			 }
+			 previous_obj = current_obj; 
+			 current_obj = current_obj->pNext; // Move to the next object in the given list
+		 }
+
+		 current_header = current_header->pNext;  // Same for the header
+	 }
+
+	 // If the object was not found 
+	 std::ostringstream errorMsg; 
+	 errorMsg << "Error : object with pID : " << pExistingD << " not found..."; 
+	 throw std::runtime_error(errorMsg.str()); 
 
 	 return 0; 
  }
