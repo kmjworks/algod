@@ -141,8 +141,8 @@ int main(void) {
 
 	 // Traverse through the nodes to determine whether the list already exists
 	 while (current_header != NULL && current_header->cBegin < *pNewID) {
-		 previous_header = current_header; 
-		 current_header = current_header->pNext; 
+		 previous_header = current_header; // Set the previous header list to point to the current header
+		 current_header = current_header->pNext; // Skip to the next header list
 	 }
 
 	 // If doesn't exist, create a new HeaderD node
