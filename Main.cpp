@@ -1,7 +1,5 @@
 #include "stdio.h"
 #include "stdlib.h"
-#include "stdint.h"
-#include "string.h"
 #include "time.h"
 #include "DateTime.h"
 #include "Objects.h"
@@ -59,16 +57,16 @@ int main(void) {
 		insertNewObject(test, newid9, 32325641);
 
 		//char newid10[] = "wksad";
-		//insertNewObject(test, newid10, 32225641);
+		//insertNewObject(test, newid10, 32225641); // Returns error, invalid format
 
 		//char newid11[] = "Wa";
-		//insertNewObject(test, newid11, 32125641);
+		//insertNewObject(test, newid11, 32125641); // ID Already exists - returns error
 
 		//char newid12[] = "W8serad";
-		//insertNewObject(test, newid12, 32525641);
+		//insertNewObject(test, newid12, 32525641); // Invalid non-alphabetic character 8 - returns error
 
 		//char newid13[] = "W_serad";
-		//insertNewObject(test, newid13, 32525641);
+		//insertNewObject(test, newid13, 32525641); // Invalid non-alphabetic character _ - returns error
 
 		PrintObjects(pStruct);
 		char idToRemove[] = "Zweas";
