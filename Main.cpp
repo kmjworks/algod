@@ -75,7 +75,11 @@ int main(void) {
 		Object7* removedObject = RemoveExistingObject(test, idToRemove); 
 		char idToRemove2[] = "Aasers"; 
 		Object7* removedObject2 = RemoveExistingObject(test, idToRemove2);
-		PrintObjects(pStruct); 
+		 
+		char idToRemove3[] = "DoesntExist"; 
+		
+		PrintObjects(pStruct);
+		Object7* removedObject3 = RemoveExistingObject(test, idToRemove3);
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << "Caught exception : " << e.what() << std::flush; 
