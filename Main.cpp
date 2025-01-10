@@ -18,6 +18,8 @@
 void PrintObjects(HeaderD* pStruct7);
 int insertNewObject(HeaderD** pStruct7, char *pNewID, int NewCode); 
 Object7* RemoveExistingObject(HeaderD** pStruct7, char* pExistingD); 
+Node* CreateBinaryTree(HeaderD* pStruct7); 
+void TreeTraversal(Node* pTree);
 
 time_t raw_time; 
 
@@ -25,9 +27,13 @@ time_t raw_time;
 int main(void) {
 
 	HeaderD* pStruct = GetStruct7(7, OBJECTS_NUM);
-	HeaderD** test = &pStruct; 
+	HeaderD** test = &pStruct;
 
-	try {
+	Node* binary_tree = CreateBinaryTree(pStruct);
+	TreeTraversal(binary_tree);
+
+	/*
+		try {
 		char newid[] = "Dxer";
 		insertNewObject(test, newid, 345241);
 
@@ -35,7 +41,9 @@ int main(void) {
 		insertNewObject(test, newid2, 341241);
 
 		char newid3[] = "Dzdsa";
-		insertNewObject(test, newid3, 36732241);
+		insertNewObject(test, newid3, 36732241); 
+		
+		
 
 		char newid4[] = "Dkas";
 		insertNewObject(test, newid4, 323343241);
@@ -56,32 +64,40 @@ int main(void) {
 		char newid9[] = "Zasdf";
 		insertNewObject(test, newid9, 32325641);
 
-		//char newid10[] = "wksad";
-		//insertNewObject(test, newid10, 32225641); // Returns error, invalid format
+		char newid10[] = "wksad";
+		insertNewObject(test, newid10, 32225641); // Returns error, invalid format
 
-		//char newid11[] = "Wa";
-		//insertNewObject(test, newid11, 32125641); // ID Already exists - returns error
+		char newid11[] = "Wa";
+		insertNewObject(test, newid11, 32125641); // ID Already exists - returns error
 
-		//char newid12[] = "W8serad";
-		//insertNewObject(test, newid12, 32525641); // Invalid non-alphabetic character 8 - returns error
+		char newid12[] = "W8serad";
+		insertNewObject(test, newid12, 32525641); // Invalid non-alphabetic character 8 - returns error
 
-		//char newid13[] = "W_serad";
-		//insertNewObject(test, newid13, 32525641); // Invalid non-alphabetic character _ - returns error
+		char newid13[] = "W_serad";
+		insertNewObject(test, newid13, 32525641); // Invalid non-alphabetic character _ - returns error
 
-		PrintObjects(pStruct);
-		char idToRemove[] = "Zweas";
-		Object7* removedObject = RemoveExistingObject(test, idToRemove); 
-		char idToRemove2[] = "Aasers"; 
-		Object7* removedObject2 = RemoveExistingObject(test, idToRemove2);
-		 
-		char idToRemove3[] = "DoesntExist"; 
+		
 		
 		PrintObjects(pStruct);
+		char idToRemove[] = "Zweas";
+		Object7* removedObject = RemoveExistingObject(test, idToRemove);
+		char idToRemove2[] = "Aasers";
+		Object7* removedObject2 = RemoveExistingObject(test, idToRemove2);
+
+		char idToRemove3[] = "DoesntExist";
+
+		PrintObjects(pStruct);
 		Object7* removedObject3 = RemoveExistingObject(test, idToRemove3);
+		
+	
+		
 	}
 	catch (const std::runtime_error& e) {
 		std::cerr << "Caught exception : " << e.what() << std::flush; 
 	}
+	*/
+
+	
 	
 	
 	return 0;
@@ -260,4 +276,128 @@ int main(void) {
 	 throw std::runtime_error(errorMsg.str()); 
 
 	 return 0; 
+ }
+
+ Node* CreateBinaryTree(HeaderD* pStruct7) {
+	 // If it's an empty list, return NULL
+	 if (pStruct7 == NULL) {
+		 return NULL; 
+	 }
+
+	 Node* root = (Node*)malloc(sizeof(Node));
+	 if (root == NULL) {
+		 return NULL; 
+	 }
+
+	 root->pObject = pStruct7->pObject; 
+	 root->pLeft = root->pRight = NULL; 
+
+	 Stack* stack = NULL;
+	 HeaderD* current_header = pStruct7->pNext;
+
+	 while (current_header || stack) {
+		 while (current_header) {
+			 Stack *new_stack = (Stack*)malloc(sizeof(Stack));
+			 if (new_stack == NULL) {
+				 return root; 
+			 }
+
+			 new_stack->pObject = current_header->pObject;
+			 new_stack->pNext = stack;
+
+			 stack = new_stack;
+			 current_header = current_header->pNext;
+		 }
+
+		 // Pop the top-most object and process it 
+		 if (stack) {
+			 Stack* temp_helper = stack; 
+			 void *current_object = temp_helper->pObject;
+
+			 stack = stack->pNext;
+
+			 free(temp_helper);
+
+			 Node* new_node = (Node*)malloc(sizeof(Node));
+			 if (new_node == NULL) {
+				 return root; 
+			 }
+
+			 new_node->pObject = current_object;
+			 new_node->pLeft = new_node->pRight = NULL;
+
+			 // Node insertion 
+			 Node* parent_node = root; 
+			 Node* current_node = root; 
+
+			 int current_object_code = ((Object7*)current_object)->Code;
+
+			 while (current_node) {
+				 parent_node = current_node; 
+
+				 int parent_object_code = ((Object7*)current_node->pObject)->Code;
+
+				 if(current_object_code < parent_object_code) {
+					 current_node = current_node->pLeft; 
+				 }
+				 else {
+					 current_node = current_node->pRight; 
+				 }
+			 }
+
+			 int parent_object_code = ((Object7*)parent_node->pObject)->Code;
+			 if(current_object_code < parent_object_code) {
+				 parent_node->pLeft = new_node; 
+			 }
+			 else {
+				 parent_node->pRight = new_node; 
+			 }	
+		 }
+	 }
+
+	 return root; 
+
+ }
+
+ void TreeTraversal(Node* pTree) {
+	 if (pTree == NULL) {
+		 return;
+	 }
+
+	 Stack* stack = NULL;
+
+	 Node* current_node = pTree;
+	 int output_counter = 1; // Output numbering iterator
+
+	 //  While the stack is not empty, traverse through the nodes
+	 while (current_node || stack) {
+		 while (current_node) {
+			 Stack* new_node = (Stack*)malloc(sizeof(Stack));
+			 if (new_node == NULL) {
+				 return;
+			 }
+
+			 new_node->pObject = current_node;
+			 new_node->pNext = stack;
+			 stack = new_node;
+
+			 current_node = current_node->pLeft;
+		 }
+
+		 // Process the node that is the top-most node in the stack
+		 if (stack) {
+			 // Pop it :D 
+			 Stack* temp_helper = stack;
+			 current_node = (Node*)temp_helper->pObject;
+			 stack = stack->pNext;
+
+			 // Print the object info just as in the first function PrintObjects
+			 Object7* current_object = (Object7*)current_node->pObject;
+			 printf("%d) %s %lu %02d %s %04d\n", output_counter, current_object->pID, current_object->Code, current_object->pDate2->Day, current_object->pDate2->Month, current_object->pDate2->Year);
+			 ++output_counter;
+
+			 current_node = current_node->pRight;
+			 free(temp_helper); 
+		 }
+	 }
  }
